@@ -27,6 +27,7 @@ fetch(" http://localhost:3000/api/products")
     for (let i = 0; i < data.length; i++) {
       const linkelt = document.createElement("a");
 
+        // Recherche de l'ID
       linkelt.href = "./product.html?id=" + data[i]._id;
 
       // Création de la balise <article>
