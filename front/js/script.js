@@ -1,8 +1,12 @@
+// Récupération des données concernant les canapés.
+
 fetch(" http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
     
+
+
     /*   <section class="items" id="items"> 
 <!--           <a href="./product.html?id=42">
                 <article>
@@ -13,15 +17,22 @@ fetch(" http://localhost:3000/api/products")
           </a> -->
         </section> */
 
+
+
+
+        //Utilisation du parent commun #items
     const container = document.querySelector("#items") ;
 
+    // Création de la boucle for afin de parcourir le tableau récupéré précédemment.
     for (let i = 0; i < data.length; i++) {
       const linkelt = document.createElement("a");
 
       linkelt.href = "./product.html?id=" + data[i]._id;
 
+      // Création de la balise <article>
       const articleelt = document.createElement("article");
 
+      //Création des multiples balises (img / h3 / p)
       const imageelt = document.createElement("img");
       imageelt.src = data[i].imageUrl;
       imageelt.alt = data[i].name;
@@ -34,44 +45,11 @@ fetch(" http://localhost:3000/api/products")
       pelt.classList.add("productDescription");
       pelt.textContent = data[i].description;
 
+      //Création des enfants 
       articleelt.appendChild(imageelt);
       articleelt.appendChild(h3elt);
       articleelt.appendChild(pelt);
       linkelt.appendChild(articleelt);
       container.appendChild(linkelt);
-
-      /* const couleurElement = document.createElement("p");
-    couleurElement.innerText = data.colors; 
-
-    const idElement = document.createElement("p");
-    idElement.innerText = products._id;
-
-    const nameElement = document.createElement("h2");
-    nameElement.innerText = products.name;
-
-    const priceElement = document.createElement("p");
-    priceElement.innerText = "Prix : " + products.price +" € ";
-
-    const imageElement = document.createElement("img");
-    imageElement.src = products.imageUrl;
-
-    const descriptionElement = document.createElement("p");
-    descriptionElement.innerText = products.description ?? "(Aucune description)";
-
-    const altElement = document.createElement("h2");
-    altElement.innerText = products.altTxt; */
-
-      /* const sectionitems = document.getElementsByTagName("article");
-
-
-
-    sectionitems.appendChild(couleurElement);
-    sectionitems.appendChild(idElement);
-    sectionitems.appendChild(nameElement);
-    sectionitems.appendChild(priceElement);
-    sectionitems.appendChild(imageElement);
-    sectionitems.appendChild(descriptionElement);
-    sectionitems.appendChild(altElement); */
     }
   });
-console.log("Hello");
