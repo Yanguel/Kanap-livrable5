@@ -48,6 +48,22 @@ let urlBase = fetch(" http://localhost:3000/api/products")
 
       // Rajout de la description en fonction de l'id
       const classdescription = document.getElementById("description");
-      classdescription.innerHTML = data[i].description;
+      classdescription.innerHTML = data[i].description; 
+
     }
+  });
+
+  // Rajout des options "Vert" et "Blanc" hors de la boucle !
+  var newoption = document.getElementById('colors');
+  var options = [ 'vert', 'blanc'];
+
+  options.forEach(function(element, key) {
+    if (element == 'vert') {
+      newoption[newoption.options.length] = new Option(element, newoption.options.length, false, false);
+    }
+    if (element == 'blanc') {
+      newoption[newoption.options.length] = new Option(element, newoption.options.length, true, false); 
+      
+    }
+    
   });
