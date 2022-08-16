@@ -15,14 +15,13 @@ let urlBase = fetch(" http://localhost:3000/api/products")
 
     // Création de la boucle for afin de parcourir le tableau récupéré précédemment.
     for (let i = 0; i < data.length; i++) {
-
-        var str = "http://localhost:3000/api/products";
-        var url = new URL(str);
-        var search_params = new URLSearchParams(url.search); 
-        if(search_params.has('_id')) {
-          var iditem = search_params.get('_id');
-          console.log(iditem)
-        }
+      var str = "http://localhost:3000/api/products";
+      var url = new URL(str);
+      var search_params = new URLSearchParams(url.search);
+      if (search_params.has("_id")) {
+        var iditem = search_params.get("_id");
+        console.log(iditem);
+      }
 
       //Création de la variable représentant la class "item__img"
       const classimg = document.getElementsByClassName("item__img");
@@ -38,11 +37,17 @@ let urlBase = fetch(" http://localhost:3000/api/products")
       //Création des enfants
       classimg[0].appendChild(linkelt);
 
-
-
+      // Rajout du nom du produit
       const classname = document.getElementById("title");
       classname.innerHTML = data[i].name;
 
-      item__content.appendChild(classname)
+
+      // Rajout du prix en fonction de l'id 
+      const classprice = document.getElementById("price");
+      classprice.innerHTML = data[i].price;
+
+      // Rajout de la description en fonction de l'id
+      const classdescription = document.getElementById("description");
+      classdescription.innerHTML = data[i].description;
     }
   });
