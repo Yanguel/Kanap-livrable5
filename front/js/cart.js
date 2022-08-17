@@ -1,4 +1,7 @@
-
+let str = window.location;
+let url = new URL(str);
+let search_params = new URLSearchParams(url.search);
+let idItem = search_params.get("id");
 
 fetch(" http://localhost:3000/api/products")
 .then((response) => response.json())
@@ -8,9 +11,11 @@ fetch(" http://localhost:3000/api/products")
   //Utilisation du parent commun <article>
     const container = document.getElementById("cart__items") ;
 
+    //Création de <article>
     const articleElt = document.createElement("article");
     articleElt.classList.add("cart__item");
-    
+
+    //Création des enfants
     const divImgElt = document.createElement("div");
     divImgElt.classList.add("cart__item__img");
     
@@ -18,7 +23,7 @@ fetch(" http://localhost:3000/api/products")
         imgElt.src = data.imageUrl;
         imgElt.alt = data.name;
     
-    
+     
     const divItemContent = document.createElement("div");
     divItemContent.classList.add("cart__item__content");
 
@@ -43,6 +48,7 @@ fetch(" http://localhost:3000/api/products")
                 const pQuantity = document.createElement("p");
                 pQuantity.innerHTML = "Qté : ";
 
+            // Création de l'input "Qté"
                 const inputNomber = document.createElement("input");
                 inputNomber.classList.add("itemQuantity");
                 inputNomber.setAttribute("type", "number");
@@ -63,22 +69,22 @@ fetch(" http://localhost:3000/api/products")
         
         
         // Recherche de l'ID
-        articleElt.href = "./product.html?id=" + data._id;
+        container.href = "./product.html?id=" + data._id;
 
       //Création des enfants 
-      container.appendChild(articleElt);
-      articleElt.appendChild(divImgElt);
-      articleElt.appendChild(divItemContent);
-      divImgElt.appendChild(imgElt);
-      divItemContent.appendChild(divItemContentDescription);
-      divItemContentDescription.appendChild(nomElt);
-      divItemContentDescription.appendChild(pCouleur);
-      divItemContentDescription.appendChild(pPrice);
-      divItemContent.appendChild(divItemContentSettings);
-      divItemContentSettings.appendChild(divSettingsQuantity);
-      divSettingsQuantity.appendChild(pQuantity);
-        divSettingsQuantity.appendChild(inputNomber);
-        divItemContentSettings.appendChild(divSettingsdelete);
-        divSettingsdelete.appendChild(pDelteItem);
+    container.appendChild(articleElt);
+        articleElt.appendChild(divImgElt);
+            divImgElt.appendChild(imgElt);
+        articleElt.appendChild(divItemContent);
+            divItemContent.appendChild(divItemContentDescription);
+                divItemContentDescription.appendChild(nomElt);
+                divItemContentDescription.appendChild(pCouleur);
+                divItemContentDescription.appendChild(pPrice);
+            divItemContent.appendChild(divItemContentSettings);
+                divItemContentSettings.appendChild(divSettingsQuantity);
+                    divSettingsQuantity.appendChild(pQuantity);
+                    divSettingsQuantity.appendChild(inputNomber);
+                divItemContentSettings.appendChild(divSettingsdelete);
+                    divSettingsdelete.appendChild(pDelteItem);
     }
   });
