@@ -22,7 +22,7 @@ fetch(" http://localhost:3000/api/products")
 
         //Utilisation du parent commun #items
     const container = document.querySelector("#items") ;
-
+ 
     // Création de la boucle for afin de parcourir le tableau récupéré précédemment.
     for (let i = 0; i < data.length; i++) {
       const linkelt = document.createElement("a");

@@ -37,6 +37,8 @@ let urlBase = fetch(" http://localhost:3000/api/products/" + idItem)
     // Rajout de la description en fonction de l'id
     const classdescription = document.getElementById("description");
     classdescription.innerHTML = canape.description;
+
+    
     // Rajout des options "Vert" et "Blanc" hors de la boucle !
     let newoption = document.getElementById("colors");
     let options = canape.colors;
