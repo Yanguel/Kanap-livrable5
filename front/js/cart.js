@@ -5,7 +5,10 @@ let urlBase = fetch(" http://localhost:3000/api/products")
   .then((canape) => {
  console.log(canape);
 
- 
+ //Rajouter l'API dans le localStorage
+ let objLinea = JSON.stringify(canape);
+ localStorage.setItem("lesCanapes",objLinea);
+
  //---------------------Le local Storage------------------------//
  /*
  const idProduitSelectionner = response.find((element) => element._id ===id);
@@ -65,7 +68,7 @@ else{
 
     const imgElt = document.createElement("img");
     imgElt.src = canape.imageUrl;
-    imgElt.alt = canape.altTxt;
+    imgElt.alt = localStorage.getItem("lesCanapes");
 
     const divItemContent = document.createElement("div");
     divItemContent.classList.add("cart__item__content");
