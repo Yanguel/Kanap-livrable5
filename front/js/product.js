@@ -12,39 +12,40 @@ let urlBase = fetch(" http://localhost:3000/api/products/" + idItem)
 ///////// Création de l'évenement permettant d'ajouter la saisi au panier". /////////////
 
       //recuperation de l'id correspondant au "ajouter au panier"
-const switchPanier= document.getElementById("addToCart");
+      const switchPanier= document.getElementById("addToCart");
 
-    // au clique, sauvegarder et ajouter l'element dans le local Storage //
-    switchPanier.addEventListener("click", () => {
+      // au clique, sauvegarder et ajouter l'element dans le local Storage //
+      switchPanier.addEventListener("click", (onclick) => {
+        
+      // affichage dans le local storage toutes les données dont nous avons besoin dans le panier //
+  
+      let optionsProduct =
+      {
+          productId : idItem,
+          prixProduit : canape.price,
+          imgProduit: canape.imageUrl,
+          descriptionPrduit: canape.description,
+          altProduit: canape.altTxt,
+          nameProduit: canape.name,
+          quantity : document.getElementById('quantity').value,
+          color : document.getElementById('colors').value
+      }
+  
+      let productInLocalStorage = JSON.parse(localStorage.getItem("produitSelectionner"))
       
-    // affichage dans le local storage toutes les données dont nous avons besoin dans le panier //
-
-    let optionsProduct =
-    {
-        productId : idItem,
-        imgProduit: canape.imageUrl,
-        descriptionPrduit: canape.description,
-        altProduit: canape.altTxt,
-        nameProduit: canape.name,
-        quantity : document.getElementById('quantity').value,
-        color : document.getElementById('colors').value
-    }
-
-    let productInLocalStorage = JSON.parse(localStorage.getItem("produitSelectionner"))
-    
-    // s'il y a un produit "produitSelectionner" dans le local storage  //
-    if(productInLocalStorage){
-        productInLocalStorage.push(optionsProduct)
-        localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
-    }
-    // s'il n'y a pas "produitSelectionner" dans le local storage ALORS : //
-    else{
-        productInLocalStorage = []
-        productInLocalStorage.push(optionsProduct)
-        console.log(productInLocalStorage)
-        localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
-    }
-});
+      // s'il y a un produit "produitSelectionner" dans le local storage  //
+      if(productInLocalStorage){
+          productInLocalStorage.push(optionsProduct)
+          localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
+      }
+      // s'il n'y a pas "produitSelectionner" dans le local storage ALORS : //
+      else{
+          productInLocalStorage = []
+          productInLocalStorage.push(optionsProduct)
+          console.log(productInLocalStorage)
+          localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
+      }
+  });
 // --------------------------------------//
 
 

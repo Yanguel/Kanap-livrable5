@@ -11,6 +11,8 @@ let urlBase = fetch(" http://localhost:3000/api/products")
 
  //------------------------------------------------------------//
 
+
+  
     //Utilisation du parent commun <article>
     const container = document.getElementById("cart__items");
 
@@ -23,8 +25,8 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     divImgElt.classList.add("cart__item__img");
 
     const imgElt = document.createElement("img");
-    imgElt.src = localStorage.getItem("");
-    imgElt.alt =  localStorage.getItem("");
+    //imgElt.src = localStorage.getItem("produitSelectionner","imgProduit");
+    imgElt.textContent =  localStorage.getItem("produitSelectionner","altProduit");
 
     const divItemContent = document.createElement("div");
     divItemContent.classList.add("cart__item__content");
@@ -33,13 +35,13 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     divItemContentDescription.classList.add("cart__item__content__description");
 
     const nomElt = document.createElement("h2");
-    nomElt.textContent = canape.name;
+    nomElt.textContent = localStorage.getItem("produitSelectionner","nameProduit");
 
     const pCouleur = document.createElement("p");
-    pCouleur.textContent = canape.colors;
+    textContent = localStorage.getItem("produitSelectionner","color");
 
     const pPrice = document.createElement("p");
-    pPrice.textContent = canape.price;
+    pPrice.textContent = localStorage.getItem("produitSelectionner","price");
 
     const divItemContentSettings = document.createElement("div");
     divItemContentSettings.classList.add("cart__item__content__settings");
@@ -48,7 +50,7 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     divSettingsQuantity.classList.add("cart__item__content__settings__quantity");
 
     const pQuantity = document.createElement("p");
-    pQuantity.innerHTML = "Qté : ";
+    pQuantity.innerHTML = "Qté : " + localStorage.getItem("produitSelectionner","quantity"); ;
 
     // Création de l'input "Qté"
     const inputNomber = document.createElement("input");
