@@ -9,50 +9,6 @@ let urlBase = fetch(" http://localhost:3000/api/products")
  let objLinea = JSON.stringify(canape);
  localStorage.setItem("lesCanapes",objLinea);
 
- //---------------------Le local Storage------------------------//
- /*
- const idProduitSelectionner = response.find((element) => element._id ===id);
- 
- const idForm = document.getElementById("addToCart");
-
- idForm.addEventListener("click", (event) => {
-    event.preventDefault();
- ;
-
- const optionQuantite = id_ProduitSelectionner.options;
- let structureOptions =[]; 
-
-
- for (let j = 0; i < optionQuantite.length; j++) {
-
- const choixFormulaire = idForm.value;
-
- let optionProduit ={
-    nomProduit: idProduitSelectionner.name,
-    id_ProduitSelectionner: idProduitSelectionner._id,
-    option_produit: choixFormulaire,
-    quantite: 1,
-    prix: id_ProduitSelectionner.price /100,
-};
-    
-    //Déclaration de la variable "produitInStorage"
-    
-    let produitInStorage = JSON.parse(localStorage.getItem("_id"));
-    console.log(produitInStorage);
-    
-    if(produitInStorage){
-        
-    }
-//si il n'y a pas de produit dans le localstorage.
-else{
-    produitInStorage =[];
-    produitInStorage.push(optionProduit);
-    localStorage.setItem("produit", JSON.stringify(produitInStorage));
-    console.log(produitInStorage);
-}
-
-}});
-*/
  //------------------------------------------------------------//
 
     //Utilisation du parent commun <article>
@@ -67,8 +23,8 @@ else{
     divImgElt.classList.add("cart__item__img");
 
     const imgElt = document.createElement("img");
-    imgElt.src = canape.imageUrl;
-    imgElt.alt = localStorage.getItem("lesCanapes");
+    imgElt.src = localStorage.getItem("");
+    imgElt.alt =  localStorage.getItem("");
 
     const divItemContent = document.createElement("div");
     divItemContent.classList.add("cart__item__content");
