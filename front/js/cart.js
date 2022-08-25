@@ -21,7 +21,7 @@ const arrayPanierLocalStorage = JSON.parse(panierLocalStorage)
 
 // Création de la boucle afin de recuperer tout les elements du localstorage
 for (let i = 0; i< arrayPanierLocalStorage.length; i++){
-  console.log(arrayPanierLocalStorage[i].imgProduit);
+  //console.log(arrayPanierLocalStorage[i].imgProduit);
 
 
 
@@ -85,14 +85,29 @@ for (let i = 0; i< arrayPanierLocalStorage.length; i++){
     pDelteItem.innerHTML = "Supprimer";
     
 
-    // Supression au clique de "supprimer"
+                // Supression au clique de "supprimer"
     
-     const supprimerLocalStorage = document.getElementsByClassName("deleteItem")
+     const btnsupprimer = document.getElementsByClassName("deleteItem")
     
-    supprimerLocalStorage.addEventListener("click", function() {
-      localStorage.clear(produitSelectionner)
-    
-    })
+    //selection de l'id du produit à supprimer 
+    for(let s =0; s < btnsupprimer; s++){
+      btnsupprimer[i].addEventListener("click", (event) => {
+        event.preventDefault();
+
+          let idSelectionner = arrayPanierLocalStorage[i].productId;
+        console.log(idSelectionner);
+
+        // Utilisation de la méthode filter 
+    arrayPanierLocalStorage = arrayPanierLocalStorage.filter( (el) => el.productId !== idSelectionner);
+
+    // on envoi la variable dans le local storage
+      localStorage.setItem("produit", JSON.stringify(arrayPanierLocalStorage));
+
+    // Alerte , le produit à été supprimé du panier
+        alert(" à été supprimer du panier ")
+        window.location.href = "cart.html";
+      })
+    }
     
 
 
@@ -113,14 +128,14 @@ const calculePrix =  [];
       // Mettre les prix du panier dans le tableau totalPrixPanier
       calculePrix.push(prixProduitDansLePanier)
 
-      console.log(calculePrix);
+      //console.log(calculePrix)
     }
     
     // additionner les prix du tableau calculePrix
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const prixTotal = calculePrix.reduce(reducer,0);
 
-    console.log(prixTotal);
+    //console.log(prixTotal);
 
     totalPrixPanier.innerHTML = prixTotal
 
