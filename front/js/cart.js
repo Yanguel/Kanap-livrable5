@@ -45,27 +45,27 @@ for (let i = 0; i< arrayPanierLocalStorage.length; i++){
 
     const divItemContentDescription = document.createElement("div");
     divItemContentDescription.classList.add("cart__item__content__description");
-
-
+    
+    
     const nomElt = document.createElement("h2");
     nomElt.textContent = arrayPanierLocalStorage[i].nameProduit;
-
+    
     const pCouleur = document.createElement("p");
     pCouleur.textContent = arrayPanierLocalStorage[i].color;
-
+    
     const pPrice = document.createElement("p");
     pPrice.textContent = arrayPanierLocalStorage[i].prixProduit + " €";
-
+    
     const divItemContentSettings = document.createElement("div");
     divItemContentSettings.classList.add("cart__item__content__settings");
-
+    
     const divSettingsQuantity = document.createElement("div");
     divSettingsQuantity.classList.add("cart__item__content__settings__quantity");
-
+    
     const pQuantity = document.createElement("p");
     pQuantity.innerHTML = "Qté : " ;
-
-
+    
+    
     // Création de l'input "Qté"
     const inputNomber = document.createElement("input");
     inputNomber.classList.add("itemQuantity");
@@ -75,49 +75,67 @@ for (let i = 0; i< arrayPanierLocalStorage.length; i++){
     inputNomber.setAttribute("max", "100");
     inputNomber.setAttribute("value", "1");
     inputNomber.textContent = arrayPanierLocalStorage[i].quantity;
-
-
-    const divSettingsdelete = document.createElement("div");
-    divSettingsdelete.classList.add("cart__item__content__settings__delete");
-
-    const pDelteItem = document.createElement("p");
-    pDelteItem.classList.add("deleteItem");
-    pDelteItem.innerHTML = "Supprimer";
     
+    
+    ////////////////////////// Calculer la quantité d'element dans le panier ////////////////////////
+    
+    const totalQuantitePanier = document.getElementById("totalQuantity");
+    
+    
+    const tableauNombreElement = [];
+          for (let n = 0 ; n < arrayPanierLocalStorage.length; n++ ){
+            let idElement = arrayPanierLocalStorage[n].productId;
+    
+            tableauNombreElement.push(idElement)
+            //console.log(tableauNombreElement);
+          }
+    
+    
+    
+    
+    totalQuantitePanier.textContent = tableauNombreElement.length;
+    
+    
+////////////////////////////////////////////////////////////////////////////////////
 
-                // Supression au clique de "supprimer"
+// Création de la div "cart__item__content__settings__delete" et de la class "deleteItem"
+
+const divSettingsdelete = document.createElement("div");
+divSettingsdelete.classList.add("cart__item__content__settings__delete");
+
+const pDelteItem = document.createElement("p");
+pDelteItem.classList.add("deleteItem");
+pDelteItem.innerHTML = "Supprimer";
+    
+    ////////////////////////////Supression au clique de "supprimer"//////////////////////////////    
     
      const btnsupprimer = document.getElementsByClassName("deleteItem")
     
-    //selection de l'id du produit à supprimer 
+    //selection de l'id du produit à supprimer  
     for(let s =0; s < btnsupprimer; s++){
       btnsupprimer[i].addEventListener("click", (event) => {
         event.preventDefault();
 
           let idSelectionner = arrayPanierLocalStorage[i].productId;
-        console.log(idSelectionner);
+        console.log(idSelectionner);  
 
         // Utilisation de la méthode filter 
-    arrayPanierLocalStorage = arrayPanierLocalStorage.filter( (el) => el.productId !== idSelectionner);
+    arrayPanierLocalStorage = arrayPanierLocalStorage.filter( (el) => el.productId !== idSelectionner);    
 
     // on envoi la variable dans le local storage
       localStorage.setItem("produit", JSON.stringify(arrayPanierLocalStorage));
 
-    // Alerte , le produit à été supprimé du panier
+    // Alerte , le produit à été supprimé du panier  
         alert(" à été supprimer du panier ")
         window.location.href = "cart.html";
-      })
-    }
+      })  
+    }  
     
 
 
+    
 
-        // Calculer la quantité d'element dans le panier
-const totalQuantitePanier = document.getElementById("totalQuantity");
-totalQuantitePanier.textContent = arrayPanierLocalStorage[i].length;
-
-
-          // calculer le panier 
+//////////////////////////   Calculer le montant du panier   //////////////////////////////////
 const totalPrixPanier = document.getElementById("totalPrice")
 
 const calculePrix =  [];
@@ -138,6 +156,8 @@ const calculePrix =  [];
     //console.log(prixTotal);
 
     totalPrixPanier.innerHTML = prixTotal
+
+////////////////////////////////////////////////////////////////////////////////////
 
 
 
