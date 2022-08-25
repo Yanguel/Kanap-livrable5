@@ -11,8 +11,20 @@ let urlBase = fetch(" http://localhost:3000/api/products")
 
  //------------------------------------------------------------//
 
-
+ let panierLocalStorage = localStorage.getItem("produitSelectionner")
+//console.log(typeof panierLocalStorage);
   
+
+//Création de la variable TABLEAU du local storage
+const arrayPanierLocalStorage = JSON.parse(panierLocalStorage)
+
+
+// Création de la boucle afin de recuperer tout les elements du localstorage
+for (let i = 0; i< arrayPanierLocalStorage.length; i++){
+  console.log(arrayPanierLocalStorage[i].imgProduit);
+
+
+
     //Utilisation du parent commun <article>
     const container = document.getElementById("cart__items");
 
@@ -25,8 +37,8 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     divImgElt.classList.add("cart__item__img");
 
     const imgElt = document.createElement("img");
-    //imgElt.src = localStorage.getItem("produitSelectionner","imgProduit");
-    imgElt.textContent =  localStorage.getItem("produitSelectionner","altProduit");
+    imgElt.alt = arrayPanierLocalStorage[i].altProduit;
+    imgElt.src =  arrayPanierLocalStorage[i].imgProduit;
 
     const divItemContent = document.createElement("div");
     divItemContent.classList.add("cart__item__content");
@@ -34,14 +46,15 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     const divItemContentDescription = document.createElement("div");
     divItemContentDescription.classList.add("cart__item__content__description");
 
+
     const nomElt = document.createElement("h2");
-    nomElt.textContent = localStorage.getItem("produitSelectionner","nameProduit");
+    nomElt.textContent = arrayPanierLocalStorage[i].nameProduit;
 
     const pCouleur = document.createElement("p");
-    textContent = localStorage.getItem("produitSelectionner","color");
+    pCouleur.textContent = arrayPanierLocalStorage[i].color;
 
     const pPrice = document.createElement("p");
-    pPrice.textContent = localStorage.getItem("produitSelectionner","price");
+    pPrice.textContent = arrayPanierLocalStorage[i].prixProduit + " €";
 
     const divItemContentSettings = document.createElement("div");
     divItemContentSettings.classList.add("cart__item__content__settings");
@@ -50,7 +63,8 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     divSettingsQuantity.classList.add("cart__item__content__settings__quantity");
 
     const pQuantity = document.createElement("p");
-    pQuantity.innerHTML = "Qté : " + localStorage.getItem("produitSelectionner","quantity"); ;
+    pQuantity.innerHTML = "Qté : " ;
+
 
     // Création de l'input "Qté"
     const inputNomber = document.createElement("input");
@@ -59,7 +73,9 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     inputNomber.setAttribute("name", "itemQuantity");
     inputNomber.setAttribute("min", "1");
     inputNomber.setAttribute("max", "100");
-    inputNomber.setAttribute("value", "42");
+    inputNomber.setAttribute("value", "1");
+    inputNomber.textContent = arrayPanierLocalStorage[i].quantity;
+
 
     const divSettingsdelete = document.createElement("div");
     divSettingsdelete.classList.add("cart__item__content__settings__delete");
@@ -68,10 +84,55 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     pDelteItem.classList.add("deleteItem");
     pDelteItem.innerHTML = "Supprimer";
     
+
+    // Supression au clique de "supprimer"
+    
+     const supprimerLocalStorage = document.getElementsByClassName("deleteItem")
+    
+    supprimerLocalStorage.addEventListener("click", function() {
+      localStorage.clear(produitSelectionner)
+    
+    })
+    
+
+
+
+        // Calculer la quantité d'element dans le panier
+const totalQuantitePanier = document.getElementById("totalQuantity");
+totalQuantitePanier.textContent = arrayPanierLocalStorage[i].length;
+
+
+          // calculer le panier 
+const totalPrixPanier = document.getElementById("totalPrice")
+
+const calculePrix =  [];
+
+    for (let p  = 0; p < arrayPanierLocalStorage.length; p++){
+      let prixProduitDansLePanier = arrayPanierLocalStorage[p].prixProduit;
+
+      // Mettre les prix du panier dans le tableau totalPrixPanier
+      calculePrix.push(prixProduitDansLePanier)
+
+      console.log(calculePrix);
+    }
+    
+    // additionner les prix du tableau calculePrix
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const prixTotal = calculePrix.reduce(reducer,0);
+
+    console.log(prixTotal);
+
+    totalPrixPanier.innerHTML = prixTotal
+
+
+
+
+
     // Recherche de l'ID
     articleElt.href = "./product.html?id=" + canape._id;
     
-    
+
+
     //Création des enfants
     container.appendChild(articleElt);
     articleElt.appendChild(divImgElt);
@@ -88,5 +149,5 @@ let urlBase = fetch(" http://localhost:3000/api/products")
       divItemContentSettings.appendChild(divSettingsdelete);
       divSettingsdelete.appendChild(pDelteItem);
     
-    
+    }
   });

@@ -86,7 +86,7 @@ let urlBase = fetch(" http://localhost:3000/api/products/" + idItem)
     options.forEach(function (element, _) {
       newoption[newoption.options.length] = new Option(
         element,
-        newoption.options.length,
+        element,
         false,
         false
       );
