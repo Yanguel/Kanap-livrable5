@@ -3,7 +3,6 @@
 let urlBase = fetch(" http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((canape) => {
- console.log(canape);
 
  //Rajouter l'API dans le localStorage
  let objLinea = JSON.stringify(canape);
@@ -77,21 +76,19 @@ for (let i = 0; i< arrayPanierLocalStorage.length; i++){
     inputNomber.textContent = arrayPanierLocalStorage[i].quantity;
     
     
-    ////////////////////////// Calculer la quantité d'element dans le panier ////////////////////////
+////////////////////////// Calculer la quantité d'element dans le panier ////////////////////////
     
     const totalQuantitePanier = document.getElementById("totalQuantity");
     
     
     const tableauNombreElement = [];
+
           for (let n = 0 ; n < arrayPanierLocalStorage.length; n++ ){
             let idElement = arrayPanierLocalStorage[n].productId;
     
             tableauNombreElement.push(idElement)
             //console.log(tableauNombreElement);
           }
-    
-    
-    
     
     totalQuantitePanier.textContent = tableauNombreElement.length;
     
@@ -107,32 +104,56 @@ const pDelteItem = document.createElement("p");
 pDelteItem.classList.add("deleteItem");
 pDelteItem.innerHTML = "Supprimer";
     
-    ////////////////////////////Supression au clique de "supprimer"//////////////////////////////    
-    
-     const btnsupprimer = document.getElementsByClassName("deleteItem")
-    
-    //selection de l'id du produit à supprimer  
-    for(let s =0; s < btnsupprimer; s++){
-      btnsupprimer[i].addEventListener("click", (event) => {
-        event.preventDefault();
 
-          let idSelectionner = arrayPanierLocalStorage[i].productId;
-        console.log(idSelectionner);  
 
-        // Utilisation de la méthode filter 
-    arrayPanierLocalStorage = arrayPanierLocalStorage.filter( (el) => el.productId !== idSelectionner);    
+////////////////////////////Supression au clique de "supprimer"//////////////////////////////    
 
-    // on envoi la variable dans le local storage
-      localStorage.setItem("produit", JSON.stringify(arrayPanierLocalStorage));
+//selection de l'id du produit à supprimer  
 
-    // Alerte , le produit à été supprimé du panier  
-        alert(" à été supprimer du panier ")
-        window.location.href = "cart.html";
-      })  
+const btnsupprimer = document.querySelector("deleteItem")
+
+for(let s = 0; s < arrayPanierLocalStorage; s++){
+  let idSelectionner = arrayPanierLocalStorage[s].productId;
+
+    btnsupprimer[s].addEventListener("click", function(supprimer) {
+      supprimer.preventDefault();
+
+      // Utilisation de la méthode filter .
+      arrayPanierLocalStorage = arrayPanierLocalStorage.filter
+      ( (el) => el.productId !== idSelectionner);    
+
+      // On envoi la variable dans le local storage.
+      localStorage.setItem("produitSelectionner", JSON.stringify(arrayPanierLocalStorage));
+
+      // Alerte supression.
+      alert(" Ce produit à été supprimer du panier ")
+      window.location.href = "cart.html";
+  })  
     }  
-    
+   
 
+    /* TEST AVEC UN AUTRE BOUT DE CODE TROUVER SUR INTERNET 
+ // Btn supprimer article //
+ const btnSupprimer = document.getElementsByClassName("deleteItem")
 
+ btnSupprimer.forEach((btn, i) => {
+     btn.addEventListener('click', e => {
+      btnSelectSupprimer (i);
+     });
+    });
+
+// Dans LocalStorage : suppression de l'article sélectionné //
+function btnSelectSupprimer(index) {
+
+items.splice(index, 1,);
+localStorage.setItem('anyItem', JSON.stringify(items));
+
+if (items.length === 0) {
+ localStorage.removeItem('anyItem');
+}
+updateNumberArticles();
+}
+*/
     
 
 //////////////////////////   Calculer le montant du panier   //////////////////////////////////
@@ -159,11 +180,19 @@ const calculePrix =  [];
 
 ////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////   Ajouter une unitée à l'élément   //////////////////////////////////
 
 
 
 
-    // Recherche de l'ID
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+// Recherche de l'ID
     articleElt.href = "./product.html?id=" + canape._id;
     
 
