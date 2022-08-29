@@ -108,7 +108,10 @@ let urlBase = fetch(" http://localhost:3000/api/products")
       divItemContentSettings.appendChild(divSettingsdelete);
       divSettingsdelete.appendChild(pDelteItem);
     }
+    //affiche le total
+    displayTotal(arrayPanierLocalStorage);
 
+    //Gestion de la suppression
     const btnSupprimer = document.querySelectorAll(".deleteItem");
 
     Array.from(btnSupprimer).forEach((btn, index) => {
@@ -118,39 +121,76 @@ let urlBase = fetch(" http://localhost:3000/api/products")
         const cartItem = e.target.closest(".cart__item");
         const nameCanape = cartItem.querySelector("h2");
         console.log(nameCanape, index);
-
+       
         // J'enleve du tableau l'élément avec l'index correspondant à la variable index
-        const elementSupprimer = arrayPanierLocalStorage.splice(index, 1);
-
-        localStorage.setItem(
-          "produitSelectionner",
-          JSON.stringify(arrayPanierLocalStorage)
-        );
+        //const elementSupprimer = arrayPanierLocalStorage.splice(cartItem, 1);
+        const elementSupprimer = arrayPanierLocalStorage.splice(index, 1)
+        localStorage.setItem("produitSelectionner", JSON.stringify(arrayPanierLocalStorage))
         cartItem.remove();
-        console.log(elementSupprimer);
+  
+        displayTotal(arrayPanierLocalStorage);
+        // recalculer total etc....
       });
     });
 
-    // Changement Quantitée
-    const btnPlusUn = document.querySelectorAll(".itemQuantity");
+    const itemsQuantity = document.querySelectorAll(".itemQuantity");
 
-    Array.from(btnPlusUn).forEach((btn, index) => {
+    Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
         console.log(e.target.value, index);
         alert("change");
         arrayPanierLocalStorage[index].quantity = e.target.value;
-
-        // J'enleve du tableau l'élément avec l'index correspondant à la variable index
-
-        localStorage.setItem(
-          "produitSelectionner",
-          JSON.stringify(arrayPanierLocalStorage)
-        );
+        if(parseInt(e.target.value) === 0){
+          alert('delete')
+          const elementSupprimer = arrayPanierLocalStorage.splice(index, 1)
+          const cartItem = e.target.closest(".cart__item");
+          cartItem.remove();
+        }
+        localStorage.setItem("produitSelectionner", JSON.stringify(arrayPanierLocalStorage))
+       
+        displayTotal(arrayPanierLocalStorage);
+        // recalculer total etc....
       });
     });
+    // let inputQuantity = document.getElementsByClassName(".itemQuantity");
+
+    //inputQuantity.addEventListener("change", function(change){
+    //inputQuantity  = index-- ;
+
+    // });
   });
 
+////////////////////////////Supression au clique de "supprimer"//////////////////////////////
+
+//selection de l'id du produit à supprimer
+
 /*
+      for (let s = 0; s < arrayPanierLocalStorage; s++) {
+        let idSelectionner = arrayPanierLocalStorage[s].productId;
+
+        btnSupprimer[s].addEventListener("click", function (supprimer) {
+          supprimer.preventDefault();
+
+          // Utilisation de la méthode filter .
+          arrayPanierLocalStorage = arrayPanierLocalStorage.filter(
+            (el) => el.productId !== idSelectionner
+          );
+
+          // On envoi la variable dans le local storage.
+          localStorage.setItem(
+            "produitSelectionner",
+            JSON.stringify(arrayPanierLocalStorage)
+          );
+
+          // Alerte supression.
+          alert(" Ce produit à été supprimer du panier ");
+          window.location.href = "cart.html";
+        });
+      }
+
+
+
+      /*
        //////////////////////////   Calculer le montant du panier   //////////////////////////////////
        const totalPrixPanier = document.getElementById("totalPrice");
 
@@ -171,5 +211,35 @@ let urlBase = fetch(" http://localhost:3000/api/products")
  
        //console.log(prixTotal);
  
-       totalPrixPanier.innerHTML = prixTotal; 
-*/
+       totalPrixPanier.innerHTML = prixTotal; */
+
+       function calculTotal(produits){
+        let total = 0; 
+        for(let i=0 ; i < produits.length ; i++){
+          total+= produits[i].prixProduit * produits[i].quantity
+        }
+        return total;
+        /* produits.forEach(produit => {
+          total+= (produit.prixProduit * produit.quantity);
+        }); */
+        return total;
+       }
+
+       function displayTotal(produits){
+        const total = calculTotal(produits)
+        document.querySelector('#totalPrice').textContent = total;
+       }
+       // je veux calculer le total des articles de mon panier
+      /* function calculTotal(produits){
+         // 1 - definir un total a 0
+        let total = 0
+         // 2 faire une boucle sur les elements de mon panier 
+         produits.forEach(produit => {
+          // dans la boucle pour chaque element calculer le prix en fonction de la quantité
+          const totalProduit = produit.quantity * produit.prixProduit;
+           // ajouter au total
+          total = total + totalProduit;
+         })
+        // en fin de boucle renvoyer le total
+        return total
+       }*/
