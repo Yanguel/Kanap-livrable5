@@ -117,7 +117,7 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     Array.from(btnSupprimer).forEach((btn, index) => {
       btn.addEventListener("click", (e) => {
         console.log(e.target, index);
-        alert("supprimé");
+        alert("Produit supprimé");
         const cartItem = e.target.closest(".cart__item");
         const nameCanape = cartItem.querySelector("h2");
         console.log(nameCanape, index);
@@ -138,7 +138,7 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
         console.log(e.target.value, index);
-        alert("change");
+        alert("Vous avez changé la quantité du produit à : " + e.target.value );
         arrayPanierLocalStorage[index].quantity = e.target.value;
         if(parseInt(e.target.value) === 0){
           alert('delete')
@@ -158,78 +158,45 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     //inputQuantity  = index-- ;
 
     // });
-  });
-
-////////////////////////////Supression au clique de "supprimer"//////////////////////////////
-
-//selection de l'id du produit à supprimer
-
-/*
-      for (let s = 0; s < arrayPanierLocalStorage; s++) {
-        let idSelectionner = arrayPanierLocalStorage[s].productId;
-
-        btnSupprimer[s].addEventListener("click", function (supprimer) {
-          supprimer.preventDefault();
-
-          // Utilisation de la méthode filter .
-          arrayPanierLocalStorage = arrayPanierLocalStorage.filter(
-            (el) => el.productId !== idSelectionner
-          );
-
-          // On envoi la variable dans le local storage.
-          localStorage.setItem(
-            "produitSelectionner",
-            JSON.stringify(arrayPanierLocalStorage)
-          );
-
-          // Alerte supression.
-          alert(" Ce produit à été supprimer du panier ");
-          window.location.href = "cart.html";
-        });
-      }
-
-
-
-      /*
+    
+    
+      
        //////////////////////////   Calculer le montant du panier   //////////////////////////////////
        const totalPrixPanier = document.getElementById("totalPrice");
-
+       
        const calculePrix = [];
- 
-       for (let p = 0; p < arrayPanierLocalStorage.length; p++) {
+       
+       for (let p = 0; p < produitSelectionner.length; p++) {
          let prixProduitDansLePanier = arrayPanierLocalStorage[p].prixProduit;
- 
+         
          // Mettre les prix du panier dans le tableau totalPrixPanier
          calculePrix.push(prixProduitDansLePanier);
- 
+         
          //console.log(calculePrix)
-       }
- 
-       // additionner les prix du tableau calculePrix
-       const reducer = (accumulator, currentValue) => accumulator + currentValue;
-       const prixTotal = calculePrix.reduce(reducer, 0);
- 
-       //console.log(prixTotal);
- 
-       totalPrixPanier.innerHTML = prixTotal; */
-
-       function calculTotal(produits){
-        let total = 0; 
-        for(let i=0 ; i < produits.length ; i++){
-          total+= produits[i].prixProduit * produits[i].quantity
         }
-        return total;
-        /* produits.forEach(produit => {
-          total+= (produit.prixProduit * produit.quantity);
-        }); */
-        return total;
-       }
-
-       function displayTotal(produits){
-        const total = calculTotal(produits)
-        document.querySelector('#totalPrice').textContent = total;
-       }
-       // je veux calculer le total des articles de mon panier
+        
+        // additionner les prix du tableau calculePrix
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        const prixTotal = calculePrix.reduce(reducer, 0);
+        
+        //console.log(prixTotal);
+        
+       totalPrixPanier.innerHTML = prixTotal; 
+       
+       function calculTotal(produits){
+         let total = 0; 
+         for(let i=0 ; i < produits.length ; i++){
+           total+= produits[i].prixProduit * produits[i].quantity
+          }
+          return total;
+        }
+        
+        function displayTotal(produits){
+          const total = calculTotal(produits)
+          document.querySelector('#totalPrice').textContent = total;
+        }
+      });
+        // je veux calculer le total des articles de mon panier
       /* function calculTotal(produits){
          // 1 - definir un total a 0
         let total = 0
