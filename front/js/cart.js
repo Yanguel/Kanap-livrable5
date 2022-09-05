@@ -63,20 +63,6 @@ let urlBase = fetch(" http://localhost:3000/api/products")
       inputNomber.setAttribute("value", arrayPanierLocalStorage[i].quantity);
       inputNomber.textContent = arrayPanierLocalStorage[i].quantity;
 
-      ////////////////////////// Calculer la quantité d'element dans le panier ////////////////////////
-
-      const totalQuantitePanier = document.getElementById("totalQuantity");
-
-      const tableauNombreElement = [];
-
-      for (let n = 0; n < arrayPanierLocalStorage.length; n++) {
-        let idElement = arrayPanierLocalStorage[n].productId;
-
-        tableauNombreElement.push(idElement);
-      }
-
-      totalQuantitePanier.textContent = tableauNombreElement.length;
-
       ////////////////////////////////////////////////////////////////////////////////////
 
       // Création de la div "cart__item__content__settings__delete" et de la class "deleteItem"
@@ -121,13 +107,16 @@ let urlBase = fetch(" http://localhost:3000/api/products")
         const cartItem = e.target.closest(".cart__item");
         const nameCanape = cartItem.querySelector("h2");
         console.log(nameCanape, index);
-       
+
         // J'enleve du tableau l'élément avec l'index correspondant à la variable index
         //const elementSupprimer = arrayPanierLocalStorage.splice(cartItem, 1);
-        const elementSupprimer = arrayPanierLocalStorage.splice(index, 1)
-        localStorage.setItem("produitSelectionner", JSON.stringify(arrayPanierLocalStorage))
+        const elementSupprimer = arrayPanierLocalStorage.splice(index, 1);
+        localStorage.setItem(
+          "produitSelectionner",
+          JSON.stringify(arrayPanierLocalStorage)
+        );
         cartItem.remove();
-  
+
         displayTotal(arrayPanierLocalStorage);
         // recalculer total etc....
       });
@@ -138,75 +127,123 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
         console.log(e.target.value, index);
-        alert("Vous avez changé la quantité du produit à : " + e.target.value );
+        alert("Vous avez changé la quantité du produit à : " + e.target.value);
         arrayPanierLocalStorage[index].quantity = e.target.value;
-        if(parseInt(e.target.value) === 0){
-          alert('delete')
-          const elementSupprimer = arrayPanierLocalStorage.splice(index, 1)
+        if (parseInt(e.target.value) === 0) {
+          alert("delete");
+
+          const elementSupprimer = arrayPanierLocalStorage.splice(index, 1);
           const cartItem = e.target.closest(".cart__item");
           cartItem.remove();
         }
-        localStorage.setItem("produitSelectionner", JSON.stringify(arrayPanierLocalStorage))
-       
+        localStorage.setItem(
+          "produitSelectionner",
+          JSON.stringify(arrayPanierLocalStorage)
+        );
+
         displayTotal(arrayPanierLocalStorage);
         // recalculer total etc....
       });
     });
-    // let inputQuantity = document.getElementsByClassName(".itemQuantity");
 
-    //inputQuantity.addEventListener("change", function(change){
-    //inputQuantity  = index-- ;
+    let produitPanier = localStorage.getItem("produitSelectionner");
 
-    // });
-    
-    
-      
-       //////////////////////////   Calculer le montant du panier   //////////////////////////////////
-       const totalPrixPanier = document.getElementById("totalPrice");
-       
-       const calculePrix = [];
-       
-       for (let p = 0; p < produitSelectionner.length; p++) {
-         let prixProduitDansLePanier = arrayPanierLocalStorage[p].prixProduit;
-         
-         // Mettre les prix du panier dans le tableau totalPrixPanier
-         calculePrix.push(prixProduitDansLePanier);
-         
-         //console.log(calculePrix)
-        }
-        
-        // additionner les prix du tableau calculePrix
-        const reducer = (accumulator, currentValue) => accumulator + currentValue;
-        const prixTotal = calculePrix.reduce(reducer, 0);
-        
-        //console.log(prixTotal);
-        
-       totalPrixPanier.innerHTML = prixTotal; 
-       
-       function calculTotal(produits){
-         let total = 0; 
-         for(let i=0 ; i < produits.length ; i++){
-           total+= produits[i].prixProduit * produits[i].quantity
-          }
-          return total;
-        }
-        
-        function displayTotal(produits){
-          const total = calculTotal(produits)
-          document.querySelector('#totalPrice').textContent = total;
-        }
+    ///////////   Calculer le montant du panier   /////////////
+    const totalPrixPanier = document.getElementById("totalPrice");
+
+    const calculePrix = [];
+    for (let p = 0; p < produitPanier; p++) {
+      let prixProduitDansLePanier = arrayPanierLocalStorage[p].prixProduit;
+
+      // Mettre les prix du panier dans le tableau totalPrixPanier
+      calculePrix.push(prixProduitDansLePanier);
+
+      //console.log(calculePrix)
+    }
+
+    // additionner les prix du tableau calculePrix
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const prixTotal = calculePrix.reduce(reducer, 0);
+
+    //console.log(prixTotal);
+
+    totalPrixPanier.innerHTML = prixTotal;
+
+    function calculTotal(produits) {
+      let total = 0;
+      for (let i = 0; i < produits.length; i++) {
+        total += produits[i].prixProduit * produits[i].quantity;
+      }
+      return total;
+    }
+
+    function displayTotal(produits) {
+      const total = calculTotal(produits);
+      document.querySelector("#totalPrice").textContent = total;
+    }
+
+    // je veux calculer le total des articles de mon panier
+    function calculTotal(produits) {
+      // 1 - definir un total a 0
+      let total = 0;
+      // 2 faire une boucle sur les elements de mon panier
+      produits.forEach((produit) => {
+        // dans la boucle pour chaque element calculer le prix en fonction de la quantité
+        const totalProduit = produit.quantity * produit.prixProduit;
+        // ajouter au total
+        total = total + totalProduit;
       });
-        // je veux calculer le total des articles de mon panier
-      /* function calculTotal(produits){
-         // 1 - definir un total a 0
-        let total = 0
-         // 2 faire une boucle sur les elements de mon panier 
-         produits.forEach(produit => {
-          // dans la boucle pour chaque element calculer le prix en fonction de la quantité
-          const totalProduit = produit.quantity * produit.prixProduit;
-           // ajouter au total
-          total = total + totalProduit;
-         })
-        // en fin de boucle renvoyer le total
-        return total
-       }*/
+      // en fin de boucle renvoyer le total
+      return total;
+    }
+
+    ///////// Calculer la quantité d'element dans le panier ////////
+
+    const totalQuantitePanier = document.getElementById("totalQuantity");
+
+    const tableauNombreElement = [];
+
+    for (let n = 0; n < arrayPanierLocalStorage.length; n++) {
+      let idElement = tableauNombreElement[n].quantity;
+
+      tableauNombreElement.push(idElement);
+    }
+
+    totalQuantitePanier.textContent = tableauNombreElement.length;
+  });
+
+///////////// Vérifier que l'email est correct /////////////////
+
+let textEmail = document.querySelector("#email");
+
+let formulaire = {
+  prenom: document.getElementById("#firstName").value,
+  nom: document.getElementById("#lastName").value,
+  adresse: document.getElementById("#adress").value,
+  ville: document.getElementById("#city").value,
+  email: document.getElementById("#email").value,
+};
+
+function validerEmail(email) {
+  const regle =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return regle.test(email);
+}
+
+function checkEmail(textEmail) {
+  if (formulaire.email === true) {
+    alert("Cette email est valide");
+    return this.email;
+  } else {
+    alert("Merci de rentrer une adresse Email correct");
+    return false;
+  }
+}
+/////////// Enregistrer les données du formulaire
+
+let commander = document.querySelector("#order");
+let formulaireComplet = document.querySelector("cart__order__form");
+
+commander.addEventListener("click", function (clique) {
+  localStorage.setItem("formulaire rempli", formulaire);
+});
