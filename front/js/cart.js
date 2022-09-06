@@ -1,16 +1,14 @@
+import {displayTotal, checkEmail } from './utils.js'; 
+
 let urlBase = fetch(" http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((canape) => {
     //------------------------------------------------------------//
-
     let panierLocalStorage = localStorage.getItem("produitSelectionner");
-
     //Création de la variable TABLEAU du local storage
     const arrayPanierLocalStorage = JSON.parse(panierLocalStorage);
-
     //Utilisation du parent commun <article>
     const container = document.getElementById("cart__items");
-
     // Création de la boucle afin de recuperer tout les elements du localstorage
     for (let i = 0; i < arrayPanierLocalStorage.length; i++) {
       //Création de <article>
@@ -96,14 +94,12 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     }
     //affiche le total
     displayTotal(arrayPanierLocalStorage);
-
     //Gestion de la suppression
     const btnSupprimer = document.querySelectorAll(".deleteItem");
-
     Array.from(btnSupprimer).forEach((btn, index) => {
       btn.addEventListener("click", (e) => {
-        console.log(e.target, index);
-        alert("Produit supprimé");
+        console.log(e.target, index, arrayPanierLocalStorage[index]);
+        alert(`Produit ${arrayPanierLocalStorage[index].nameProduit} supprimé`);
         const cartItem = e.target.closest(".cart__item");
         const nameCanape = cartItem.querySelector("h2");
         console.log(nameCanape, index);
@@ -121,13 +117,10 @@ let urlBase = fetch(" http://localhost:3000/api/products")
         // recalculer total etc....
       });
     });
-
     const itemsQuantity = document.querySelectorAll(".itemQuantity");
-
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
         console.log(e.target.value, index);
-        alert("Vous avez changé la quantité du produit à : " + e.target.value);
         arrayPanierLocalStorage[index].quantity = e.target.value;
         if (parseInt(e.target.value) === 0) {
           alert("delete");
@@ -146,104 +139,33 @@ let urlBase = fetch(" http://localhost:3000/api/products")
       });
     });
 
-    let produitPanier = localStorage.getItem("produitSelectionner");
+    document.querySelector('.cart__order__form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      console.log('submit');
+      const prenomForm = document.querySelector('#firstName');
+      const nomForm = document.querySelector('#lastName');
+      const adresseForm = document.querySelector('#address');
+      const villeForm = document.querySelector('#city');
+      const emailForm = document.querySelector('#email');
+      const prenom = prenomForm.value;
+      const nom = nomForm.value;
+      const adresse = adresseForm.value;
+      const ville = villeForm.value;
+      const email = checkEmail(emailForm.value);
 
-    ///////////   Calculer le montant du panier   /////////////
-    const totalPrixPanier = document.getElementById("totalPrice");
-
-    const calculePrix = [];
-    for (let p = 0; p < produitPanier; p++) {
-      let prixProduitDansLePanier = arrayPanierLocalStorage[p].prixProduit;
-
-      // Mettre les prix du panier dans le tableau totalPrixPanier
-      calculePrix.push(prixProduitDansLePanier);
-
-      //console.log(calculePrix)
-    }
-
-    // additionner les prix du tableau calculePrix
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    const prixTotal = calculePrix.reduce(reducer, 0);
-
-    //console.log(prixTotal);
-
-    totalPrixPanier.innerHTML = prixTotal;
-
-    function calculTotal(produits) {
-      let total = 0;
-      for (let i = 0; i < produits.length; i++) {
-        total += produits[i].prixProduit * produits[i].quantity;
+      if(email !== false){
+        //stocker dans localStorage
+        const contact = {
+          prenomContact : prenom,
+          nomContact : nom,
+          adresseContact : adresse,
+          villeContact : ville,
+          email : email, 
+        }
+        //Envoyer commande à l'API
+        let totalFormulaire = ( "Prénom: " + prenom + " || Nom: " + nom + " || Adresse: " + adresse + " || Ville: " + ville + " || Email: " + email );
+        localStorage.setItem("Données Formulaire", totalFormulaire )
       }
-      return total;
-    }
-
-    function displayTotal(produits) {
-      const total = calculTotal(produits);
-      document.querySelector("#totalPrice").textContent = total;
-    }
-
-    // je veux calculer le total des articles de mon panier
-    function calculTotal(produits) {
-      // 1 - definir un total a 0
-      let total = 0;
-      // 2 faire une boucle sur les elements de mon panier
-      produits.forEach((produit) => {
-        // dans la boucle pour chaque element calculer le prix en fonction de la quantité
-        const totalProduit = produit.quantity * produit.prixProduit;
-        // ajouter au total
-        total = total + totalProduit;
-      });
-      // en fin de boucle renvoyer le total
-      return total;
-    }
-
-    ///////// Calculer la quantité d'element dans le panier ////////
-
-    const totalQuantitePanier = document.getElementById("totalQuantity");
-
-    const tableauNombreElement = [];
-
-    for (let n = 0; n < arrayPanierLocalStorage.length; n++) {
-      let idElement = tableauNombreElement[n].quantity;
-
-      tableauNombreElement.push(idElement);
-    }
-
-    totalQuantitePanier.textContent = tableauNombreElement.length;
+    })
   });
 
-///////////// Vérifier que l'email est correct /////////////////
-
-let textEmail = document.querySelector("#email");
-
-let formulaire = {
-  prenom: document.getElementById("#firstName").value,
-  nom: document.getElementById("#lastName").value,
-  adresse: document.getElementById("#adress").value,
-  ville: document.getElementById("#city").value,
-  email: document.getElementById("#email").value,
-};
-
-function validerEmail(email) {
-  const regle =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regle.test(email);
-}
-
-function checkEmail(textEmail) {
-  if (formulaire.email === true) {
-    alert("Cette email est valide");
-    return this.email;
-  } else {
-    alert("Merci de rentrer une adresse Email correct");
-    return false;
-  }
-}
-/////////// Enregistrer les données du formulaire
-
-let commander = document.querySelector("#order");
-let formulaireComplet = document.querySelector("cart__order__form");
-
-commander.addEventListener("click", function (clique) {
-  localStorage.setItem("formulaire rempli", formulaire);
-});
