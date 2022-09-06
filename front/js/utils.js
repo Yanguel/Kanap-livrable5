@@ -2,7 +2,7 @@
 function calculTotalNbElementsPanier(panier){
     let total = 0
     panier.forEach(product => {
-      console.log(product);
+      //console.log(product);
       total = total + parseInt(product.quantity);
     });
     return total;
@@ -16,7 +16,6 @@ function validerEmail(email) {
 
 function checkEmail(textEmail) {
   if (validerEmail(textEmail)) {
-    alert("Cette email est valide");
     return textEmail;
   } else {
     alert("Merci de rentrer une adresse Email correct");

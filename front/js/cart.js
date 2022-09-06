@@ -1,4 +1,4 @@
-import {displayTotal, checkEmail } from './utils.js'; 
+import { displayTotal, checkEmail } from "./utils.js";
 
 let urlBase = fetch(" http://localhost:3000/api/products")
   .then((response) => response.json())
@@ -98,11 +98,11 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     const btnSupprimer = document.querySelectorAll(".deleteItem");
     Array.from(btnSupprimer).forEach((btn, index) => {
       btn.addEventListener("click", (e) => {
-        console.log(e.target, index, arrayPanierLocalStorage[index]);
+        //console.log(e.target, index, arrayPanierLocalStorage[index]);
         alert(`Produit ${arrayPanierLocalStorage[index].nameProduit} supprimé`);
         const cartItem = e.target.closest(".cart__item");
         const nameCanape = cartItem.querySelector("h2");
-        console.log(nameCanape, index);
+        //console.log(nameCanape, index);
 
         // J'enleve du tableau l'élément avec l'index correspondant à la variable index
         //const elementSupprimer = arrayPanierLocalStorage.splice(cartItem, 1);
@@ -120,7 +120,7 @@ let urlBase = fetch(" http://localhost:3000/api/products")
     const itemsQuantity = document.querySelectorAll(".itemQuantity");
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
-        console.log(e.target.value, index);
+        //console.log(e.target.value, index);
         arrayPanierLocalStorage[index].quantity = e.target.value;
         if (parseInt(e.target.value) === 0) {
           alert("delete");
@@ -139,33 +139,26 @@ let urlBase = fetch(" http://localhost:3000/api/products")
       });
     });
 
-    document.querySelector('.cart__order__form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      console.log('submit');
-      const prenomForm = document.querySelector('#firstName');
-      const nomForm = document.querySelector('#lastName');
-      const adresseForm = document.querySelector('#address');
-      const villeForm = document.querySelector('#city');
-      const emailForm = document.querySelector('#email');
-      const prenom = prenomForm.value;
-      const nom = nomForm.value;
-      const adresse = adresseForm.value;
-      const ville = villeForm.value;
-      const email = checkEmail(emailForm.value);
+    document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        //console.log('submit');
+        const emailForm = document.querySelector("#email");
 
-      if(email !== false){
-        //stocker dans localStorage
-        const contact = {
-          prenomContact : prenom,
-          nomContact : nom,
-          adresseContact : adresse,
-          villeContact : ville,
-          email : email, 
+        if (email !== false) {
+          //stocker dans localStorage
+          const contact = {
+            prenomContact: document.querySelector("#firstName").value,
+            nomContact: document.querySelector("#lastName").value,
+            adresseContact: document.querySelector("#address").value,
+            villeContact: document.querySelector("#city").value,
+            email: checkEmail(emailForm.value),
+          };
+          const chargeUtile = JSON.stringify(contact);
+          fetch("http://localhost:3000/api/products", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: chargeUtile,
+          });
         }
-        //Envoyer commande à l'API
-        let totalFormulaire = ( "Prénom: " + prenom + " || Nom: " + nom + " || Adresse: " + adresse + " || Ville: " + ville + " || Email: " + email );
-        localStorage.setItem("Données Formulaire", totalFormulaire )
-      }
-    })
+      });
   });
-
