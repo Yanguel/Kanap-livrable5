@@ -1,3 +1,4 @@
+
 function calculTotalNbElementsPanier(panier){
     let total = 0
     panier.forEach(product => {
@@ -6,6 +7,7 @@ function calculTotalNbElementsPanier(panier){
     });
     return total;
 }
+
 function validerEmail(email) {
   const regle =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
