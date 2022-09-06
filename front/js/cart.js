@@ -147,18 +147,31 @@ let urlBase = fetch(" http://localhost:3000/api/products")
         if (email !== false) {
           //stocker dans localStorage
           const contact = {
-            prenomContact: document.querySelector("#firstName").value,
-            nomContact: document.querySelector("#lastName").value,
-            adresseContact: document.querySelector("#address").value,
-            villeContact: document.querySelector("#city").value,
+            firstName: document.querySelector("#firstName").value,
+            lastName: document.querySelector("#lastName").value,
+            address: document.querySelector("#address").value,
+            city: document.querySelector("#city").value,
             email: checkEmail(emailForm.value),
           };
-          const chargeUtile = JSON.stringify(contact);
-          fetch("http://localhost:3000/api/products", {
+          var tableauLocalStorage = [];
+          function produitDuPanier (){
+            if (localStorage.getItem("produitSelectionner") !== null){
+              let localStorageProduit = JSON.parse(localStorage.getItem("produitSelectionner"))
+              for (let p = 0; p < localStorageProduit.length; p++ ){
+                tableauLocalStorage.push(localStorageProduit[p].productId)
+              }
+            }
+          }
+          produitDuPanier();
+          console.log(tableauLocalStorage);
+          fetch('http://localhost:3000/api/products/order', {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: chargeUtile,
-          });
-        }
-      });
+            headers: { 'Content-Type': 'application/json', },
+            body: JSON.stringify({contact, tableauLocalStorage}),
+          })
+          .then((response) => {
+            //console.log(response); // 201 si OK
+            return response.json();
+          })
+      }});
   });
