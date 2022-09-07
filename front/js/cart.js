@@ -163,15 +163,19 @@ let urlBase = fetch(" http://localhost:3000/api/products")
             }
           }
           produitDuPanier();
-          console.log(tableauLocalStorage);
+          //console.log(tableauLocalStorage);
           fetch('http://localhost:3000/api/products/order', {
             method: "POST",
             headers: { 'Content-Type': 'application/json', },
-            body: JSON.stringify({contact, tableauLocalStorage}),
+            body: JSON.stringify({contact, products:tableauLocalStorage}),
           })
           .then((response) => {
-            //console.log(response); // 201 si OK
             return response.json();
+          })
+          .then((data) => {
+            //console.log(data); // 201 si OK
+            localStorage.setItem("order", JSON.stringify(data));
+            document.location.href = "confirmation.html";
           })
       }});
   });
