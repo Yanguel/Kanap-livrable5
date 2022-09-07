@@ -174,8 +174,7 @@ let urlBase = fetch(" http://localhost:3000/api/products")
           })
           .then((data) => {
             //console.log(data); // 201 si OK
-            localStorage.setItem("order", JSON.stringify(data));
-            document.location.href = "confirmation.html";
+            document.location.href = "confirmation.html?orderId=" + data.orderId;
           })
       }});
   });
