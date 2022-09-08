@@ -164,6 +164,7 @@ let urlBase = fetch(" http://localhost:3000/api/products")
           }
           produitDuPanier();
           //console.log(tableauLocalStorage);
+          // Envoi de la requête à l'API
           fetch('http://localhost:3000/api/products/order', {
             method: "POST",
             headers: { 'Content-Type': 'application/json', },
@@ -174,6 +175,7 @@ let urlBase = fetch(" http://localhost:3000/api/products")
           })
           .then((data) => {
             //console.log(data); // 201 si OK
+            // Mettre l'orderId récuperer par la réponse dans l'URL de redirection vers la page de confirmation
             document.location.href = "confirmation.html?orderId=" + data.orderId;
           })
       }});

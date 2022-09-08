@@ -8,5 +8,4 @@ let orderLocalStorage = search_params.get("orderId");
 let numeroOrder = document.querySelector("#orderId");
 numeroOrder.innerHTML = orderLocalStorage;
 
-localStorage.removeItem("order");
 
