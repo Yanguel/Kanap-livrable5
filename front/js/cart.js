@@ -88,8 +88,9 @@ import { displayTotal, checkEmail } from "./utils.js";
       divSettingsdelete.appendChild(pDelteItem);
     }
     //affiche le total
-    displayTotal(arrayPanierLocalStorage);
+
     //Gestion de la suppression
+    displayTotal(arrayPanierLocalStorage);
     const btnSupprimer = document.querySelectorAll(".deleteItem");
     Array.from(btnSupprimer).forEach((btn, index) => {
       btn.addEventListener("click", (e) => {
@@ -99,7 +100,7 @@ import { displayTotal, checkEmail } from "./utils.js";
         //console.log(nameCanape, index);
 
         // J'enleve du tableau l'élément avec l'index correspondant à la variable index
-        //const elementSupprimer = arrayPanierLocalStorage.splice(cartItem, 1);
+         arrayPanierLocalStorage.splice(cartItem, 1);
         localStorage.setItem(
           "produitSelectionner",
           JSON.stringify(arrayPanierLocalStorage));
@@ -109,6 +110,7 @@ import { displayTotal, checkEmail } from "./utils.js";
         // recalculer total etc....
       });
     });
+    
     const itemsQuantity = document.querySelectorAll(".itemQuantity");
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
@@ -141,6 +143,7 @@ import { displayTotal, checkEmail } from "./utils.js";
           city: document.querySelector("#city").value,
           email: checkEmail(emailForm.value),
         };
+
         function produitDuPanier (){
           if (localStorage.getItem("produitSelectionner") !== null){
             let localStorageProduit = JSON.parse(localStorage.getItem("produitSelectionner"))
