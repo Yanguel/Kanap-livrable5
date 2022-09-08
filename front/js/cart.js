@@ -1,8 +1,5 @@
 import { displayTotal, checkEmail } from "./utils.js";
 
-let urlBase = fetch(" http://localhost:3000/api/products")
-  .then((response) => response.json())
-  .then((canape) => {
     //------------------------------------------------------------//
     let panierLocalStorage = localStorage.getItem("produitSelectionner");
     //Création de la variable TABLEAU du local storage
@@ -73,8 +70,6 @@ let urlBase = fetch(" http://localhost:3000/api/products")
       pDelteItem.innerHTML = "Supprimer";
 
       //////////////////////////   Ajouter une unitée à l'élément   //////////////////////////////////
-      // Recherche de l'ID
-      articleElt.href = "./product.html?id=" + canape._id;
 
       //Création des enfants
       container.appendChild(articleElt);
@@ -101,16 +96,13 @@ let urlBase = fetch(" http://localhost:3000/api/products")
         //console.log(e.target, index, arrayPanierLocalStorage[index]);
         alert(`Produit ${arrayPanierLocalStorage[index].nameProduit} supprimé`);
         const cartItem = e.target.closest(".cart__item");
-        const nameCanape = cartItem.querySelector("h2");
         //console.log(nameCanape, index);
 
         // J'enleve du tableau l'élément avec l'index correspondant à la variable index
         //const elementSupprimer = arrayPanierLocalStorage.splice(cartItem, 1);
-        const elementSupprimer = arrayPanierLocalStorage.splice(index, 1);
         localStorage.setItem(
           "produitSelectionner",
-          JSON.stringify(arrayPanierLocalStorage)
-        );
+          JSON.stringify(arrayPanierLocalStorage));
         cartItem.remove();
 
         displayTotal(arrayPanierLocalStorage);
@@ -124,8 +116,6 @@ let urlBase = fetch(" http://localhost:3000/api/products")
         arrayPanierLocalStorage[index].quantity = e.target.value;
         if (parseInt(e.target.value) === 0) {
           alert("delete");
-
-          const elementSupprimer = arrayPanierLocalStorage.splice(index, 1);
           const cartItem = e.target.closest(".cart__item");
           cartItem.remove();
         }
@@ -144,24 +134,24 @@ let urlBase = fetch(" http://localhost:3000/api/products")
         //console.log('submit');
         const emailForm = document.querySelector("#email");
 
-        if (email !== false) {
-          //stocker dans localStorage
-          const contact = {
-            firstName: document.querySelector("#firstName").value,
-            lastName: document.querySelector("#lastName").value,
-            address: document.querySelector("#address").value,
-            city: document.querySelector("#city").value,
-            email: checkEmail(emailForm.value),
-          };
-          var tableauLocalStorage = [];
-          function produitDuPanier (){
-            if (localStorage.getItem("produitSelectionner") !== null){
-              let localStorageProduit = JSON.parse(localStorage.getItem("produitSelectionner"))
-              for (let p = 0; p < localStorageProduit.length; p++ ){
-                tableauLocalStorage.push(localStorageProduit[p].productId)
-              }
+        const contact = {
+          firstName: document.querySelector("#firstName").value,
+          lastName: document.querySelector("#lastName").value,
+          address: document.querySelector("#address").value,
+          city: document.querySelector("#city").value,
+          email: checkEmail(emailForm.value),
+        };
+        function produitDuPanier (){
+          if (localStorage.getItem("produitSelectionner") !== null){
+            let localStorageProduit = JSON.parse(localStorage.getItem("produitSelectionner"))
+            for (let p = 0; p < localStorageProduit.length; p++ ){
+              tableauLocalStorage.push(localStorageProduit[p].productId)
             }
           }
+        }
+        if (contact.email !== false) {
+          //stocker dans localStorage
+          var tableauLocalStorage = [];
           produitDuPanier();
           //console.log(tableauLocalStorage);
           // Envoi de la requête à l'API
@@ -179,4 +169,3 @@ let urlBase = fetch(" http://localhost:3000/api/products")
             document.location.href = "confirmation.html?orderId=" + data.orderId;
           })
       }});
-  });

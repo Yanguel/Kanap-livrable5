@@ -30,29 +30,30 @@ let urlBase = fetch(" http://localhost:3000/api/products/" + idItem)
           quantity : document.getElementById('quantity').value,
           color : document.getElementById('colors').value
       }
-  if(optionsProduct.quantity == 0 ){
 
-    alert("La quantité de vôtre article doit etre supérieur à 0." )
+  if(optionsProduct.quantity == 0 && optionsProduct.color === ""){
+    alert("Merci de séléctionner une quantité et une couleur." )
   }
-  if(optionsProduct.color == ""){
-    alert("Merci de séléctionner une couleur.")
-  }
-  else{
-      let productInLocalStorage = JSON.parse(localStorage.getItem("produitSelectionner"))
-      
-      // s'il y a un produit "produitSelectionner" dans le local storage  //
-      if(productInLocalStorage){
-          productInLocalStorage.push(optionsProduct)
-          localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
-      }
-      // s'il n'y a pas "produitSelectionner" dans le local storage ALORS : //
       else{
-          productInLocalStorage = []
-          productInLocalStorage.push(optionsProduct)
-          console.log(productInLocalStorage)
-          localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
+        let productInLocalStorage = JSON.parse(localStorage.getItem("produitSelectionner"))
+        
+        if(productInLocalStorage){
+              productInLocalStorage.push(optionsProduct)
+              localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
+              alert ("Produit ajouté au panier.")
+            }
+          // s'il n'y a pas "produitSelectionner" dans le local storage ALORS : //
+          else{
+              productInLocalStorage = []
+              productInLocalStorage.push(optionsProduct)
+              console.log(productInLocalStorage)
+              localStorage.setItem("produitSelectionner", JSON.stringify(productInLocalStorage))
+              alert ("Produit ajouté au panier.")
+          }
       }
-    }
+    
+    // s'il y a un produit "produitSelectionner" dans le local storage  //
+    
   });
 // --------------------------------------//
 
