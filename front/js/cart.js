@@ -1,14 +1,17 @@
-import { displayTotal, checkEmail } from "./utils.js";
+import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
 
     //------------------------------------------------------------//
     let panierLocalStorage = localStorage.getItem("produitSelectionner");
     //Création de la variable TABLEAU du local storage
     const arrayPanierLocalStorage = JSON.parse(panierLocalStorage);
+
     //Utilisation du parent commun <article>
     const container = document.getElementById("cart__items");
+
     // Création de la boucle afin de recuperer tout les elements du localstorage
     for (let i = 0; i < arrayPanierLocalStorage.length; i++) {
       //Création de <article>
+      
       const articleElt = document.createElement("article");
       articleElt.classList.add("cart__item");
 
@@ -57,7 +60,7 @@ import { displayTotal, checkEmail } from "./utils.js";
       inputNomber.setAttribute("max", "100");
       inputNomber.setAttribute("value", arrayPanierLocalStorage[i].quantity);
       inputNomber.textContent = arrayPanierLocalStorage[i].quantity;
-
+      
       ////////////////////////////////////////////////////////////////////////////////////
 
       // Création de la div "cart__item__content__settings__delete" et de la class "deleteItem"
@@ -93,83 +96,91 @@ import { displayTotal, checkEmail } from "./utils.js";
     //Gestion de la suppression
     displayTotal(arrayPanierLocalStorage);
     const btnSupprimer = document.querySelectorAll(".deleteItem");
+
     Array.from(btnSupprimer).forEach((btn, index) => {
       btn.addEventListener("click", (e) => {
         //console.log(e.target, index, arrayPanierLocalStorage[index]);
         alert(`Produit ${arrayPanierLocalStorage[index].nameProduit} supprimé`);
         const cartItem = e.target.closest(".cart__item");
         //console.log(nameCanape, index);
-
         // J'enleve du tableau l'élément avec l'index correspondant à la variable index
-         arrayPanierLocalStorage.splice(cartItem, 1);
-        localStorage.setItem(
-          "produitSelectionner",
-          JSON.stringify(arrayPanierLocalStorage));
+         arrayPanierLocalStorage.splice(index, 1);
+        localStorage.setItem("produitSelectionner",JSON.stringify(arrayPanierLocalStorage));
         cartItem.remove();
 
         displayTotal(arrayPanierLocalStorage);
         // recalculer total etc....
       });
     });
-    
+    //Calculer la quantité d'article dans le panier.
     const itemsQuantity = document.querySelectorAll(".itemQuantity");
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
         //console.log(e.target.value, index);
+        if(e.target.value >100){
+          alert("Le montant ne peux etre superieur à 100.")
+          window.location= "cart.html";
+          return
+        }
+        if(e.target.value < 0){
+          alert("Le montant ne peux etre inférieur à 0.")
+          window.location= "cart.html";
+          return
+        }else{
         arrayPanierLocalStorage[index].quantity = e.target.value;
         if (parseInt(e.target.value) === 0) {
           alert("delete");
           const cartItem = e.target.closest(".cart__item");
           cartItem.remove();
         }
-        localStorage.setItem(
-          "produitSelectionner",
-          JSON.stringify(arrayPanierLocalStorage)
-        );
+        localStorage.setItem("produitSelectionner",JSON.stringify(arrayPanierLocalStorage));
 
         displayTotal(arrayPanierLocalStorage);
         // recalculer total etc....
+      }
       });
     });
 
     document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
-        e.preventDefault();
-        //console.log('submit');
-        const emailForm = document.querySelector("#email");
+      e.preventDefault();
+      //console.log('submit');
+      const firstName2 = document.querySelector("#firstName");
+      const lastName2 = document.querySelector("#lastName");
+      const emailForm = document.querySelector("#email");
+      const contact = {
+        firstName: checkPrenom(firstName2.value),
+        lastName: checkNom(lastName2.value),
+        address: document.querySelector("#address").value,
+        city: document.querySelector("#city").value,
+        email: checkEmail(emailForm.value),
+      };
 
-        const contact = {
-          firstName: document.querySelector("#firstName").value,
-          lastName: document.querySelector("#lastName").value,
-          address: document.querySelector("#address").value,
-          city: document.querySelector("#city").value,
-          email: checkEmail(emailForm.value),
-        };
-
-        function produitDuPanier (){
-          if (localStorage.getItem("produitSelectionner") !== null){
-            let localStorageProduit = JSON.parse(localStorage.getItem("produitSelectionner"))
-            for (let p = 0; p < localStorageProduit.length; p++ ){
-              tableauLocalStorage.push(localStorageProduit[p].productId)
-            }
+      function produitDuPanier (){
+        if (localStorage.getItem("produitSelectionner") !== null){
+          let localStorageProduit = JSON.parse(localStorage.getItem("produitSelectionner"))
+          for (let p = 0; p < localStorageProduit.length; p++ ){
+            tableauLocalStorage.push(localStorageProduit[p].productId)
           }
         }
-        if (contact.email !== false) {
-          //stocker dans localStorage
-          var tableauLocalStorage = [];
-          produitDuPanier();
-          //console.log(tableauLocalStorage);
-          // Envoi de la requête à l'API
-          fetch('http://localhost:3000/api/products/order', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json', },
-            body: JSON.stringify({contact, products:tableauLocalStorage}),
-          })
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
-            //console.log(data); // 201 si OK
-            // Mettre l'orderId récuperer par la réponse dans l'URL de redirection vers la page de confirmation
-            document.location.href = "confirmation.html?orderId=" + data.orderId;
-          });
-        }});
+      }
+
+      if (contact.email && contact.firstName && contact.lastName) {
+        //stocker dans localStorage
+        var tableauLocalStorage = [];
+        produitDuPanier();
+        //console.log(tableauLocalStorage);
+        // Envoi de la requête à l'API
+        fetch('http://localhost:3000/api/products/order', {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json', },
+          body: JSON.stringify({contact, products:tableauLocalStorage}),
+        })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          //console.log(data); // 201 si OK
+          // Mettre l'orderId récuperer par la réponse dans l'URL de redirection vers la page de confirmation
+          document.location.href = "confirmation.html?orderId=" + data.orderId;
+        });
+      }});

@@ -7,13 +7,32 @@ function calculTotalNbElementsPanier(panier){
       total = total + parseInt(product.quantity);
     });
     return total;
+} 
+function regexSansChiffre(veriftext) {
+  var exp = new RegExp("^[a-zA-Z]*$","g")
+  return exp.test(veriftext);
+}
+function checkPrenom(textNomPrenom) {
+  if (regexSansChiffre(textNomPrenom)) {
+    return textNomPrenom;
+  } else {
+    alert("Le prénom ne doit contenir de chiffre.");
+    return false;
+  }
+}
+function checkNom(textNomPrenom) {
+  if (regexSansChiffre(textNomPrenom)) {
+    return textNomPrenom;
+  } else {
+    alert("Le nom ne peut contenir de chiffre.");
+    return false;
+  }
 }
 function validerEmail(email) {
   const regle =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regle.test(email);
 }
-
 function checkEmail(textEmail) {
   if (validerEmail(textEmail)) {
     return textEmail;
@@ -45,4 +64,4 @@ function calculTotal(produits) {
   return total;
 }
 
-export {calculTotal, calculTotalNbElementsPanier, checkEmail, displayTotal, validerEmail}
+export {calculTotal, calculTotalNbElementsPanier, checkEmail, displayTotal, validerEmail, regexSansChiffre, checkNom, checkPrenom}

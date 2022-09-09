@@ -28,15 +28,21 @@ let idItem = search_params.get("id");
         quantity : document.getElementById('quantity').value,
         color : document.getElementById('colors').value
       }
-      
+        if(optionsProduct.quantity > 100 ){
+          alert ("La quantité ne peux pas etre supérieur à 100.")
+          return
+        }
         if(optionsProduct.quantity == 0 && optionsProduct.color == "" ){
           alert("Merci de séléctionner une quantité et une couleur." )
+          return
         }
         if(optionsProduct.color == "" && optionsProduct.quantity != 0){
           alert("Merci de séléctionner une couleur.")
+          return
         }
         if(optionsProduct.color != "" && optionsProduct.quantity == 0){
           alert("Merci de séléctionner une quantité.")
+          return
         }
       
       else if(optionsProduct.quantity != 0 && optionsProduct.color != "") {
