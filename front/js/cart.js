@@ -14,7 +14,7 @@ import { displayTotal, checkEmail } from "./utils.js";
 
       //Création des enfants
       const divImgElt = document.createElement("div");
-      divImgElt.classList.add("cart__item__img");
+      divImgElt.classList.add("cart__item__img"); 
 
       const imgElt = document.createElement("img");
       imgElt.alt = arrayPanierLocalStorage[i].altProduit;
@@ -69,6 +69,7 @@ import { displayTotal, checkEmail } from "./utils.js";
       pDelteItem.classList.add("deleteItem");
       pDelteItem.innerHTML = "Supprimer";
 
+      
       //////////////////////////   Ajouter une unitée à l'élément   //////////////////////////////////
 
       //Création des enfants
@@ -170,5 +171,5 @@ import { displayTotal, checkEmail } from "./utils.js";
             //console.log(data); // 201 si OK
             // Mettre l'orderId récuperer par la réponse dans l'URL de redirection vers la page de confirmation
             document.location.href = "confirmation.html?orderId=" + data.orderId;
-          })
-      }});
+          });
+        }});
