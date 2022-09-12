@@ -1,5 +1,9 @@
 import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
 
+fetch(" http://localhost:3000/api/products")
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
     //------------------------------------------------------------//
     let panierLocalStorage = localStorage.getItem("produitSelectionner");
     //Création de la variable TABLEAU du local storage
@@ -11,7 +15,7 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
     // Création de la boucle afin de recuperer tout les elements du localstorage
     for (let i = 0; i < arrayPanierLocalStorage.length; i++) {
       //Création de <article>
-      
+      const produit = data.find(elt => elt._id === arrayPanierLocalStorage[i].productId)
       const articleElt = document.createElement("article");
       articleElt.classList.add("cart__item");
 
@@ -20,8 +24,8 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
       divImgElt.classList.add("cart__item__img"); 
 
       const imgElt = document.createElement("img");
-      imgElt.alt = arrayPanierLocalStorage[i].altProduit;
-      imgElt.src = arrayPanierLocalStorage[i].imgProduit;
+      imgElt.alt = produit.name;
+      imgElt.src = produit.imageUrl;
 
       const divItemContent = document.createElement("div");
       divItemContent.classList.add("cart__item__content");
@@ -32,13 +36,13 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
       );
 
       const nomElt = document.createElement("h2");
-      nomElt.textContent = arrayPanierLocalStorage[i].nameProduit;
+      nomElt.textContent = produit.name;
 
       const pCouleur = document.createElement("p");
       pCouleur.textContent = arrayPanierLocalStorage[i].color;
 
       const pPrice = document.createElement("p");
-      pPrice.textContent = arrayPanierLocalStorage[i].prixProduit + " €";
+      pPrice.textContent = produit.price + " €";
 
       const divItemContentSettings = document.createElement("div");
       divItemContentSettings.classList.add("cart__item__content__settings");
@@ -94,7 +98,7 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
     //affiche le total
 
     //Gestion de la suppression
-    displayTotal(arrayPanierLocalStorage);
+    displayTotal(arrayPanierLocalStorage, data);
     const btnSupprimer = document.querySelectorAll(".deleteItem");
 
     Array.from(btnSupprimer).forEach((btn, index) => {
@@ -108,7 +112,7 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
         localStorage.setItem("produitSelectionner",JSON.stringify(arrayPanierLocalStorage));
         cartItem.remove();
 
-        displayTotal(arrayPanierLocalStorage);
+        displayTotal(arrayPanierLocalStorage, data);
         // recalculer total etc....
       });
     });
@@ -136,11 +140,12 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
         }
         localStorage.setItem("produitSelectionner",JSON.stringify(arrayPanierLocalStorage));
 
-        displayTotal(arrayPanierLocalStorage);
+        displayTotal(arrayPanierLocalStorage, data);
         // recalculer total etc....
       }
       });
     });
+  });
 
     document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
       e.preventDefault();
