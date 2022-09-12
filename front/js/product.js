@@ -12,7 +12,7 @@ fetch(" http://localhost:3000/api/products/" + idItem)
 
     //recuperation de l'id correspondant au "ajouter au panier"
     const switchPanier = document.getElementById("addToCart");
-    
+
    //Rajout des deux div pour la phrase d'erreur.
    const ligneQuantiter = document.querySelector(".item__content__settings__quantity");
    const laQuantitee = document.querySelector("#quantity");
@@ -45,6 +45,8 @@ fetch(" http://localhost:3000/api/products/" + idItem)
         laQuantitee.style.color = "red";
         ajoutDiv.style.color = "red";
         return;
+      }else{
+        ajoutDiv.innerHTML = "";
       }
       if (optionsProduct.quantity == 0 && optionsProduct.color == "") {
         ajoutDivCouleur.innerHTML = "Merci de séléctionner une couleur.";
@@ -54,19 +56,28 @@ fetch(" http://localhost:3000/api/products/" + idItem)
         laQuantitee.style.color = "red";
         ajoutDiv.style.color = "red";
         return;
+      }else{
+        ajoutDiv.innerHTML = "";
+        ajoutDivCouleur.innerHTML ="";
       }
       if (optionsProduct.color == "" && optionsProduct.quantity != 0) {
         ajoutDivCouleur.innerHTML = "Merci de séléctionner une couleur.";
         lacouleur.style.color = "red";
         ajoutDivCouleur.style.color = "red";
         return;
+      }else{
+        ajoutDivCouleur.innerHTML = "";
       }
       if (optionsProduct.color != "" && optionsProduct.quantity == 0) {
         ajoutDiv.innerHTML = "Merci de séléctionner une quantité.";
         laQuantitee.style.color = "red";
         ajoutDiv.style.color = "red";
         return;
-      } else if (optionsProduct.quantity != 0 && optionsProduct.color != "") {
+      } else{
+        ajoutDiv.innerHTML = "";
+      }
+      
+      else if (optionsProduct.quantity != 0 && optionsProduct.color != "") {
         let productInLocalStorage = JSON.parse(
           localStorage.getItem("produitSelectionner")
         );
@@ -74,10 +85,7 @@ fetch(" http://localhost:3000/api/products/" + idItem)
         // s'il y a un produit "produitSelectionner" dans le local storage  //
         if (productInLocalStorage) {
           productInLocalStorage.push(optionsProduct);
-          localStorage.setItem(
-            "produitSelectionner",
-            JSON.stringify(productInLocalStorage)
-          );
+          localStorage.setItem("produitSelectionner",JSON.stringify(productInLocalStorage));
           alert("Produit rajouté dans le panier.");
         }
         // s'il n'y a pas "produitSelectionner" dans le local storage ALORS : //
