@@ -1,26 +1,26 @@
 /* eslint-disable */
 
-// Fonction qui permet de vérifier que la saisi ne contient pas de chiffre. (Regex)
+// Permet de vérifier que la saisi ne contient pas de chiffre. (Regex)
 function regexSansChiffre(veriftext) {
   var exp = new RegExp("^[a-zA-Z]*$","g")
   return exp.test(veriftext);
 }
-
-// Fonction pour donne l'instruction si le prenom à un chiffre.
+// Donne l'instruction si le prenom à un chiffre.
 function checkPrenom(textNomPrenom) {
   if (regexSansChiffre(textNomPrenom)) {
     return textNomPrenom;
   } else {
-    alert("Le prénom ne doit contenir de chiffre.");
+    document.querySelector("#firstName").style.color = "red";
     return false;
   }
 }
-// Fonction pour donne l'instruction si le nom à un chiffre.
+// Donne l'instruction si le nom à un chiffre.
 function checkNom(textNomPrenom) {
   if (regexSansChiffre(textNomPrenom)) {
     return textNomPrenom;
   } else {
-    alert("Le nom ne peut contenir de chiffre.");
+    document.querySelector("#lastName").style.color = "red";
+    
     return false;
   }
 }
@@ -30,16 +30,16 @@ function validerEmail(email) {
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regle.test(email);
 }
-//Fonction qui donne l'instruction si l'email ne correspond pas à la regex.
+// Donne l'instruction si l'email ne correspond pas à la regex.
 function checkEmail(textEmail) {
   if (validerEmail(textEmail)) {
     return textEmail;
   } else {
-    alert("Merci de rentrer une adresse Email correct");
+    document.querySelector("#email").style.color = "red";
     return false;
   }
 }
-// Fonction qui permet de calculer le nombre d'élément dans un tableau.
+// Permet de calculer le nombre d'élément dans un tableau.
 function calculTotalNbElementsPanier(panier){
     let total = 0
     panier.forEach(product => {
@@ -62,7 +62,7 @@ function calculTotal(produits) {
   // en fin de boucle renvoyer le total
   return total;
 }
-//Fonction qui permet d'afficher le prix total du panier et la quantité.
+// Fonction qui permet d'afficher le prix total du panier et la quantité.
 function displayTotal(produits) {
   const total = calculTotal(produits);
   document.querySelector("#totalPrice").textContent = total;
@@ -70,5 +70,14 @@ function displayTotal(produits) {
   document.querySelector("#totalQuantity").textContent = totalElementsPanier;
 }
 
-
-export {calculTotal, calculTotalNbElementsPanier, checkEmail, displayTotal, validerEmail, regexSansChiffre, checkNom, checkPrenom}
+function erreurQuantite (){
+  ajoutDiv.innerHTML = "Merci de séléctionner une quantité.";
+  laQuantitee.style.color = "red";
+  ajoutDiv.style.color = "red";
+}
+function erreurcouleur(){
+  ajoutDivCouleur.innerHTML = "Merci de séléctionner une couleur.";
+  lacouleur.style.color = "red";
+  ajoutDivCouleur.style.color = "red";
+}
+export {calculTotal, erreurQuantite, erreurcouleur, calculTotalNbElementsPanier, checkEmail, displayTotal, validerEmail, regexSansChiffre, checkNom, checkPrenom}

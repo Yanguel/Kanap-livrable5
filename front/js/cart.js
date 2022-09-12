@@ -114,6 +114,7 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
     });
     //Calculer la quantité d'article dans le panier.
     const itemsQuantity = document.querySelectorAll(".itemQuantity");
+    
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener("change", (e) => {
         //console.log(e.target.value, index);
@@ -154,7 +155,7 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
         city: document.querySelector("#city").value,
         email: checkEmail(emailForm.value),
       };
-
+      // Permet de mettre en tableau le localstorage avec l'id des produits.
       function produitDuPanier (){
         if (localStorage.getItem("produitSelectionner") !== null){
           let localStorageProduit = JSON.parse(localStorage.getItem("produitSelectionner"))
@@ -163,6 +164,7 @@ import { displayTotal, checkEmail, checkNom, checkPrenom,} from "./utils.js";
           }
         }
       }
+
 
       if (contact.email && contact.firstName && contact.lastName) {
         //stocker dans localStorage
