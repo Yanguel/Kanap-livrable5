@@ -4,21 +4,6 @@ fetch(" http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
-    
-
-
-    /*   <section class="items" id="items"> 
-<!--           <a href="./product.html?id=42">
-                <article>
-                        <img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">
-                        <h3 class="productName">Kanap name1</h3>
-                        <p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada risus sapien gravida nulla nisl arcu.</p>
-                 </article>
-          </a> -->
-        </section> */
-
-
-
 
         //Utilisation du parent commun #items
     const container = document.querySelector("#items") ;
@@ -38,6 +23,8 @@ fetch(" http://localhost:3000/api/products")
       imageelt.src = data[i].imageUrl;
       imageelt.alt = data[i].name;
 
+
+      
       const h3elt = document.createElement("h3");
       h3elt.classList.add("productName");
       h3elt.textContent = data[i].name;

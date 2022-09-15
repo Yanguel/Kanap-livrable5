@@ -93,7 +93,6 @@ fetch(" http://localhost:3000/api/products/" + idItem)
           );
           alert("Produit rajouté dans le panier.");
         }
-      
     });
     // --------------------------------------//
 
