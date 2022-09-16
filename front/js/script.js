@@ -3,7 +3,6 @@
 fetch(" http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((data) => {
-    console.log(data);
 
         //Utilisation du parent commun #items
     const container = document.querySelector("#items") ;
@@ -23,8 +22,6 @@ fetch(" http://localhost:3000/api/products")
       imageelt.src = data[i].imageUrl;
       imageelt.alt = data[i].name;
 
-
-      
       const h3elt = document.createElement("h3");
       h3elt.classList.add("productName");
       h3elt.textContent = data[i].name;

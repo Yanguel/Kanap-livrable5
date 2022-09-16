@@ -46,7 +46,6 @@ function checkEmail(textEmail) {
 function calculTotalNbElementsPanier(panier){
     let total = 0
     panier.forEach(product => {
-      //console.log(product);
       total = total + parseInt(product.quantity);
     });
     return total;
