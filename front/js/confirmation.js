@@ -8,4 +8,5 @@ let orderLocalStorage = search_params.get('orderId');
 let numeroOrder = document.querySelector('#orderId');
 numeroOrder.innerHTML = orderLocalStorage;
 
+//Supression du localStorage "produitSelectionner"
 localStorage.removeItem('produitSelectionner');

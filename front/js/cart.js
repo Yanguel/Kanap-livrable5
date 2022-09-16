@@ -1,3 +1,4 @@
+// Appel des fonctions présents dans le fichier "utils.js"
 import { displayTotal, checkEmail, checkNom, checkPrenom } from './utils.js';
 
 fetch(' http://localhost:3000/api/products')
@@ -5,6 +6,7 @@ fetch(' http://localhost:3000/api/products')
   .then((data) => {
     //------------------------------------------------------------//
     let panierLocalStorage = localStorage.getItem('produitSelectionner');
+
     //Création de la variable TABLEAU du local storage
     const arrayPanierLocalStorage = JSON.parse(panierLocalStorage);
 
@@ -13,7 +15,7 @@ fetch(' http://localhost:3000/api/products')
 
     // Création de la boucle afin de recuperer tout les elements du localstorage
     for (let i = 0; i < arrayPanierLocalStorage.length; i++) {
-      //Création de <article>
+      //Récuperation de l'id dans le tableau.
       const produit = data.find(
         (elt) => elt._id === arrayPanierLocalStorage[i].productId,
       );
@@ -66,10 +68,7 @@ fetch(' http://localhost:3000/api/products')
       inputNomber.setAttribute('value', arrayPanierLocalStorage[i].quantity);
       inputNomber.textContent = arrayPanierLocalStorage[i].quantity;
 
-      ////////////////////////////////////////////////////////////////////////////////////
-
       // Création de la div "cart__item__content__settings__delete" et de la class "deleteItem"
-
       const divSettingsdelete = document.createElement('div');
       divSettingsdelete.classList.add('cart__item__content__settings__delete');
 
@@ -77,7 +76,7 @@ fetch(' http://localhost:3000/api/products')
       pDelteItem.classList.add('deleteItem');
       pDelteItem.innerHTML = 'Supprimer';
 
-      //////////////////////////   Ajouter une unitée à l'élément   //////////////////////////////////
+      /////////////  Ajouter une unitée à l'élément  /////////////
 
       //Création des enfants
       container.appendChild(articleElt);
@@ -95,7 +94,6 @@ fetch(' http://localhost:3000/api/products')
       divItemContentSettings.appendChild(divSettingsdelete);
       divSettingsdelete.appendChild(pDelteItem);
     }
-    //affiche le total
 
     //Gestion de la suppression
     displayTotal(arrayPanierLocalStorage, data);
@@ -106,21 +104,20 @@ fetch(' http://localhost:3000/api/products')
         alert(`Produit supprimé`);
         const cartItem = e.target.closest('.cart__item');
 
-        // J'enleve du tableau l'élément avec l'index correspondant à la variable index
+        // J'enleve du tableau l'élément avec l'index correspondant.
         arrayPanierLocalStorage.splice(index, 1);
         localStorage.setItem(
           'produitSelectionner',
           JSON.stringify(arrayPanierLocalStorage),
         );
         cartItem.remove();
-
         displayTotal(arrayPanierLocalStorage, data);
         // recalculer total etc....
       });
     });
+
     //Calculer la quantité d'article dans le panier.
     const itemsQuantity = document.querySelectorAll('.itemQuantity');
-
     Array.from(itemsQuantity).forEach((btn, index) => {
       btn.addEventListener('change', (e) => {
         if (e.target.value > 100) {
@@ -144,16 +141,16 @@ fetch(' http://localhost:3000/api/products')
             JSON.stringify(arrayPanierLocalStorage),
           );
 
+          // recalculer total
           displayTotal(arrayPanierLocalStorage, data);
-          // recalculer total etc....
         }
       });
     });
   });
 
+//Gestion du formulaire et du localStorage
 document.querySelector('.cart__order__form').addEventListener('submit', (e) => {
   e.preventDefault();
-
   const firstName2 = document.querySelector('#firstName');
   const lastName2 = document.querySelector('#lastName');
   const emailForm = document.querySelector('#email');
@@ -177,7 +174,6 @@ document.querySelector('.cart__order__form').addEventListener('submit', (e) => {
   }
 
   if (contact.email && contact.firstName && contact.lastName) {
-    //stocker dans localStorage
     var tableauLocalStorage = [];
     produitDuPanier();
 
@@ -191,7 +187,7 @@ document.querySelector('.cart__order__form').addEventListener('submit', (e) => {
         return response.json();
       })
       .then((data) => {
-        // Mettre l'orderId récuperer par la réponse dans l'URL de redirection vers la page de confirmation
+        // Mettre l'orderId récuperé par la réponse dans l'URL de redirection vers la page de confirmation
         document.location.href = 'confirmation.html?orderId=' + data.orderId;
       });
   }
