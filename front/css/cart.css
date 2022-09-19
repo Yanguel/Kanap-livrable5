@@ -11,7 +11,6 @@ h1 {
 h2 {
 	text-align: start;
 }
-
 /************/
 /*Cart Items*/
 /************/
@@ -133,7 +132,6 @@ h2 {
 .cart__order__form__submit input:hover {
 	box-shadow: rgb(42 18 206 / 90%) 0 0 22px 6px;
 }
-
 
 
 /***************/
