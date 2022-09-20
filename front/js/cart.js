@@ -77,7 +77,7 @@ document.querySelector('.cart__order__form').addEventListener('submit', (e) => {
     }
   }
 });
-
+// Gestion de la quantité des produits
 function addListenerToQtyButtons(itemsQuantity, arrayPanierLocalStorage, data) {
   Array.from(itemsQuantity).forEach((btn, index) => {
     btn.addEventListener('change', (e) => {
@@ -108,7 +108,7 @@ function addListenerToQtyButtons(itemsQuantity, arrayPanierLocalStorage, data) {
     });
   });
 }
-
+// Gestion du bouton supprimé
 function addListenersToDeleteButtons(
   btnSupprimer,
   arrayPanierLocalStorage,
@@ -130,12 +130,11 @@ function addListenersToDeleteButtons(
     });
   });
 }
-
+// //Création des différents enfants.
 function addLineOfProductInCart(produit, productFromCart, container) {
   const articleElt = document.createElement('article');
   articleElt.classList.add('cart__item');
 
-  //Création des enfants
   const divImgElt = document.createElement('div');
   divImgElt.classList.add('cart__item__img');
 

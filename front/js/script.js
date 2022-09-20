@@ -10,7 +10,7 @@ fetch(' http://localhost:3000/api/products')
       createProductDOM(data[i], container);
     }
   });
-
+// Création des éléments du DOM
 function createProductDOM(product, container) {
   const linkelt = document.createElement('a');
 

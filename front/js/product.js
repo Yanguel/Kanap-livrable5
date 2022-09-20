@@ -10,15 +10,13 @@ fetch(' http://localhost:3000/api/products/' + idItem)
   .then((canape) => {
     //recuperation de l'élément HTML correspondant à "ajouter au panier".
     const switchPanier = document.getElementById('addToCart');
-    //Rajout des deux div pour le message d'erreur
-
     createDOMProduct(canape);
     // Au clique, sauvegarder et ajouter l'element dans le local Storage.
     switchPanier.addEventListener('click', () => {
       addProductToCart();
     });
   });
-
+// Création des différents élément du DOM
 function createDOMProduct(canape) {
   const ligneQuantiter = document.querySelector(
     '.item__content__settings__quantity',
@@ -72,7 +70,7 @@ function createDOMProduct(canape) {
     );
   });
 }
-
+// Gestion pour rajouter l'élément au paninier (quantité / couleur etc..)
 function addProductToCart() {
   // Récupere les données dont nous avons besoin pour le panier.
   let optionsProduct = {
@@ -93,7 +91,7 @@ function addProductToCart() {
   addToLocalStorage(optionsProduct);
   alert('Produit rajouté dans le panier.');
 }
-
+// Gestion si un élément identique est déja présent dans le localstorage
 function addToLocalStorage(optionsProduct) {
   let productInLocalStorage = JSON.parse(
     localStorage.getItem('produitSelectionner'),
@@ -127,7 +125,7 @@ function addToLocalStorage(optionsProduct) {
     );
   }
 }
-
+// Confirmation permettant le refus ou l'ajout de l'élément au panier (pour la couleur)
 function manageColor(optionsProduct, choiceError) {
   let error = choiceError;
   const errorDivCouleur = document
@@ -145,7 +143,7 @@ function manageColor(optionsProduct, choiceError) {
   }
   return error;
 }
-
+// Confirmation permettant le refus ou l'ajout de l'élément au panier (pour la quantité)
 function manageQuantite(optionsProduct, choiceError) {
   let error = choiceError;
   const laQuantitee = document.querySelector('#quantity');
