@@ -1,10 +1,11 @@
 # Kanap #
 
-This is the front end and back end server for Project 5 of the Web Developer path.
-
-### Back end Prerequisites ###
-
-You will need to have Node and `npm` installed locally on your machine.
+Ceci est un site E-commerce.
+Le site doit disposer:
+- D'une page d'acceuil montrant les différents produits de l'entreprise (récupéré via une API mise à disposition)
+- D'une page produit montrant le produit séléctionné sur la page d'acceuil et indiquant le prix/la description/la quantité et la possibilité d'ajouter au panier.
+- D'une page panier montrant les éléments séléctionner précédemment , le prix total,le nombre d'article, un formulaire..
+- Une page de confirmation donnant le numéro de la commande au client.
 
 ### Back end Installation ###
 
